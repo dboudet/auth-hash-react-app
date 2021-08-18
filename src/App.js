@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react"
+import { Layout } from "antd"
+import "antd/dist/antd.css"
+import "./App.css"
+import Signup from "./components/Signup"
+import Login from "./components/Login"
+import ProtectedForm from "./components/ProtectedForm"
 
-function App() {
+export default function App() {
+  const [token, setToken] = useState()
+  const [returningUser, setReturningUser] = useState(false)
+  const { Header, Footer } = Layout
+
+  if (!token) {
+    return (
+      <Layout>
+        <Header>
+          <h1>Header</h1>
+        </Header>
+        {!returningUser ? (
+          <Signup setToken={setToken} setReturningUser={setReturningUser} />
+        ) : (
+          <Login setToken={setToken} setReturningUser={setReturningUser} />
+        )}
+        <Footer>Footer</Footer>
+      </Layout>
+    )
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Layout>
+      <Header>
+        <h1>Header</h1>
+      </Header>
+      <ProtectedForm token={token} />
+      <Footer>Footer</Footer>
+    </Layout>
+  )
 }
-
-export default App;
